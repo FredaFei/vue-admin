@@ -44,6 +44,9 @@
     },
     mounted() {
       //代理父组件的columns属性
+      // todo 父组件columns 参数不能引用对象的
+      //  exp: obj = {columns: [...]} use: :columns = "obj.columns" 此时this.$parent不能找到columns参数，
+      //  this.$parent.$children中可找到，但vue提示 re-render warning
       let parentComponent = findComponentUpwardByProp(this, "columns");
       if (parentComponent) {
         parentComponent.columns = parentComponent.columns.map(column =>

@@ -1,24 +1,10 @@
 <!--需要使用组件实例ref属性只能在父组件定义ref属性，使用this.$refs.<父组件ref属性名>.$children[0]获取-->
 <template>
-  <div>
-    <section class="demo-box">
-      <h2>基础表格</h2>
-      <base-table :data="tableData.tableData1" :columns="tableData.columns1" :stripe="false"></base-table>
-    </section>
-    <section class="demo-box">
-      <h2>排序</h2>
-      <base-table :data="tableData.tableData2" :columns="tableData.columns2"
-                  :default-sort="{prop: 'date', order: 'descending'}"></base-table>
-    </section>
-    <section class="demo-box">
-      <h2>筛选</h2>
-      <el-button @click="resetDateFilter">清除日期过滤器</el-button>
-      <base-table :data="tableData.tableData3" :columns="tableData.columns3" ref="filterTable"></base-table>
-    </section>
+  <div class="app-container">
     <section class="demo-box">
       <h2>自定义列模板</h2>
       <el-button @click="handleToggleTableHeader">切换表头(自定义指令防抖)</el-button>
-      <base-table :data="data" :columns="columns">
+      <base-table :data="tableData" :columns="columns">
         <template v-slot:font>
           <el-table-column type="selection" width="55"></el-table-column>
         </template>
@@ -34,14 +20,16 @@
   </div>
 </template>
 <script>
-  import tableData from './data'
+  import data from './data'
+
+  const {columns2, tableData} = data
+
   export default {
-    name: 'ex-table',
+    name: 'v-custom-table',
     data() {
       return {
         tableData,
-        data:tableData.tableData4,
-        columns:tableData.columns4,
+        columns: columns2,
         showTableHeader: false
       }
     },
@@ -51,9 +39,6 @@
       },
       handleDelete(index, row) {
         console.log(index, row);
-      },
-      resetDateFilter() {
-        this.$refs.filterTable.$children[0].clearFilter('date');
       },
       handleToggleTableHeader() {
         this.showTableHeader = !this.showTableHeader;
