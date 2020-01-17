@@ -20,8 +20,8 @@
 
 <script>
   import {options} from "./options";
-  import {proxyProp} from "../../util/proxyProp";
-  import {findComponentUpwardByProp} from "../../util/findComponents";
+  import {proxyProp} from "@/util/proxyProp";
+  import {findComponentUpwardByProp} from "@/util/findComponents";
 
   const form = Symbol('form')
   export default {
@@ -52,9 +52,11 @@
         type: Function,
         default: () => {}
       },
+      //传入mergeForm允许父组件修改内部Model对象
       mergeForm: {
         type: Object,
-        default: () => {}
+        default: () => ({}),
+        required: true
       }
     },
     data() {
@@ -101,7 +103,7 @@
       //代理父组件的columns属性
       let parentComponent = findComponentUpwardByProp(this, "mergeForm");
       if (parentComponent) {
-        parentComponent.mergeForm = proxyProp(parentComponent.mergeForm);
+        parentComponent.mergeForm = proxyProp(parentComponent.mergeForm)
       } else {
         throw new Error("can not find parentComponent");
       }
@@ -139,10 +141,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .base-pagination {
-    margin-top: 10px;
-    text-align: right;
-  }
-</style>
